@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBD 19th - For Safira Febriani ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --bg-color: #ffe5ec;
+            --main-pink: #ff85a1;
+            --dark-pink: #ff4d6d;
+            --soft-pink: #fff0f3;
+            --text-pink: #c9184a;
+        }
+
+        body { 
+            margin: 0; 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: linear-gradient(-45deg, #ffe5ec, #ffccd5, #fff0f3, #ff85a1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Poppins', sans-serif; 
+            overflow-x: hidden; 
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container { 
+            background: var(--soft-pink); 
+            padding: 25px; border-radius: 30px; 
+            box-shadow: 0 15px 40px rgba(255, 77, 109, 0.2); 
+            text-align: center; max-width: 380px; width: 88%; 
+            z-index: 10; position: relative; margin: 20px auto;
+            border: 2px solid white;
+        }
+
+        .hidden { display: none !important; }
+
+        h1, h3 { color: var(--text-pink); font-weight: 700; }
+        .btn { font-family: 'Poppins', sans-serif; font-weight: 600; background: var(--dark-pink); color: white; border: none; padding: 14px 20px; border-radius: 15px; cursor: pointer; margin-top: 10px; width: 100%; transition: 0.3s; display: inline-block; box-sizing: border-box; text-decoration: none; }
+        .btn-alt { background: var(--main-pink); }
+        .btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        .sticker-item, .game-item, .game-play, h1, h3, p, .btn {
+            font-family: 'Poppins', "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+        }
+
+        .letter-box { background: white; padding: 25px 15px; border-radius: 20px; margin-top: 15px; text-align: left; max-height: 450px; overflow-y: auto; border: 2px dashed var(--main-pink); box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
+        .letter-content { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--text-pink); line-height: 1.8; white-space: pre-line; }
+        .letter-header { font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: var(--dark-pink); display: block; margin-bottom: 15px; }
+        .letter-footer { font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: var(--dark-pink); display: block; text-align: right; margin-top: 25px; }
+
+        .camera-box { position: relative; width: 100%; aspect-ratio: 3/4; background: #000; border-radius: 15px; overflow: hidden; border: 8px solid white; margin: 15px 0; box-sizing: border-box; transition: border-color 0.3s; }
+        #webcam { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); transition: filter 0.3s; }
+        #countdown { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 60px; font-weight: bold; z-index: 100; display: none; text-shadow: 0 0 15px rgba(0,0,0,0.5); }
+        
+        #sticker-overlay { position: absolute; top: 15px; right: 15px; font-size: 50px; z-index: 5; pointer-events: none; }
+
+        .filter-label { font-size: 11px; color: #888; margin-top: 10px; display: block; text-align: left; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .grid-ui { display: flex; gap: 12px; margin: 8px 0; flex-wrap: wrap; }
+        
+        .dot-btn { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; display: flex; align-items: center; justify-content: center; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .dot-btn.active { border-color: var(--dark-pink); transform: scale(1.1); }
+        .dot-btn:hover { transform: scale(1.1); }
+        .sticker-item { font-size: 18px; background: #f8f8f8; }
+
+        #captured-strip { width: 100%; border-radius: 5px; margin-bottom: 15px; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        canvas#photo-canvas { display: none; }
+
+        .cake-wrapper { cursor: pointer; margin: 30px 0; animation: bounce 2s infinite ease-in-out; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .cake { position: relative; width: 140px; height: 70px; background: #ffccd5; border-radius: 10px; margin: auto; }
+        .icing { position: absolute; top: -10px; left: 0; width: 100%; height: 22px; background: var(--main-pink); border-radius: 20px; }
+        .flame { display: none; position: absolute; top: -20px; width: 12px; height: 22px; background: radial-gradient(#fff, #ffff00, #ff8c00); border-radius: 50% 50% 40% 40%; animation: flicker 0.1s infinite; }
+        @keyframes flicker { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+        #micBtn { display: none; background: var(--dark-pink); color: white; width: 65px; height: 65px; border-radius: 50%; border: none; font-size: 28px; margin: 20px auto; cursor: pointer; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(255, 77, 109, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); } }
+
+        #game-canvas { width: 100%; height: 300px; background: white; border-radius: 15px; border: 2px solid var(--dark-pink); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;}
+        .game-item { position: absolute; font-size: 35px; cursor: pointer; user-select: none; }
+        
+        .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .photo-item { width: 100%; border-radius: 15px; aspect-ratio: 9/16; object-fit: cover; border: 2px solid var(--main-pink); }
+
+        #block-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; background: #ffccd5; padding: 8px; border-radius: 10px; }
+        .block-cell { width: 35px; height: 35px; background: rgba(255,255,255,0.5); border-radius: 4px; cursor: pointer; transition: 0.2s; }
+        .block-cell.active { background: var(--dark-pink); transform: scale(0.9); }
+    </style>
+</head>
+<body>
+
+    <audio id="hbdMusic" loop>
+        <source src="audio2.mp3.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="blowSound">
+        <source src="audio4.mp3.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        <div id="step1">
+            <div class="cake-wrapper" onclick="emergencyBlow()">
+                <div class="cake"><div class="icing"></div>
+                    <div style="position:absolute; top:-40px; left:50%; transform:translateX(-50%); display:flex; gap:15px;">
+                        <div style="width:20px; height:40px; background:var(--dark-pink); position:relative; border-radius:4px;">
+                            <div id="f1" class="flame" style="left:4px;"></div>
+                        </div>
+                        <div style="width:20px; height:40px; background:var(--dark-pink); position:relative; border-radius:4px;">
+                            <div id="f2" class="flame" style="left:4px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h1>Happy Birthday! 🎂</h1>
+            <p id="instructionText" style="font-size: 13px; color: var(--text-pink);">Nyalakan lilinnya dulu...</p>
+            <button id="actionBtn" class="btn" onclick="burn()">Bakar Lilin 🕯️</button>
+            <button id="micBtn" onclick="activateMic()">🎤</button>
+            <p id="micStatus" class="hidden" style="font-size: 11px; color: var(--dark-pink); margin-top:10px;">Klik Mic & Tiup Kencang! 🌬️</p>
+        </div>
+
+        <div id="step2" class="hidden">
+            <h3>You're Gorgeous! ✨</h3>
+            <div class="photo-grid">
+                <img src="valdidut.jpg.jpeg" class="photo-item" style="grid-column: span 2;">
+                <img src="valdi2.jpg.jpeg" class="photo-item">
+                <img src="valdi3.jpg.jpeg" class="photo-item">
+            </div>
+            <button class="btn" onclick="nextStep('step2', 'step3')">Baca Pesan Spesial 💌</button>
+        </div>
+
+        <div id="step3" class="hidden">
+            <div class="letter-box">
+                <span class="letter-header">Halo Sayangku, ❤️</span>
+                <div class="letter-content">
+                    Selamat ulang tahun yang ke-19 ya!
+
+                    Hari ini bukan cuma sekadar pergantian angka, tapi pengingat betapa beruntungnya dunia (dan aku) karena punya kamu. Di usia yang baru ini, aku ingin kamu duduk sebentar dan sadar betapa hebatnya kamu sudah bertahan dan tumbuh sejauh ini.
+
+                    Aku selalu kagum melihat cara kamu tertawa, cara kamu berjuang menghadapi hari-hari yang sulit, dan cara kamu tetap menjadi orang baik meskipun dunia kadang nggak adil. Kamu punya kekuatan yang mungkin nggak kamu sadari sendiri, dan itu yang bikin kamu luar biasa di mataku.
+
+                    Maaf ya kalau aku belum bisa kasih kado yang paling mewah di dunia, tapi lewat halaman kecil ini, aku ingin kamu tahu kalau kamu itu **prioritas**. Aku ingin jadi orang pertama yang bangga sama setiap pencapaian kecilmu, dan jadi orang terakhir yang bakal pergi saat kamu merasa jatuh.
+
+                    Di umur 19 ini, aku berdoa supaya kamu selalu dikelilingi kebahagiaan. Semoga langkahmu selalu diringankan, impianmu satu per satu jadi kenyataan, dan semoga senyummu itu nggak pernah hilang—karena jujur, itu pemandangan favoritku.
+
+                    Terima kasih sudah lahir ke dunia, terima kasih sudah mengizinkan aku jadi bagian dari perjalananmu. Jangan pernah ragu sama diri sendiri ya, karena buat aku, kamu adalah mahakarya yang paling indah.
+
+                    Sekali lagi, Happy Birthday, Cantik. I love you, today, tomorrow, and forever.
+                </div>
+                <span class="letter-footer">With love, Me. ✍️</span>
+            </div>
+            <button class="btn" onclick="nextStep('step3', 'step4')">Buka Kado Terakhir 🎁</button>
+        </div>
+
+        <div id="step4" class="hidden">
+            <h3>Video Buat Kamu 🎞️</h3>
+            <video id="myVideo" controls style="width:100%; border-radius:15px;"><source src="video.mp4.mp4" type="video/mp4"></video>
+            <button class="btn" onclick="nextStep('step4', 'menu')">Lanjut ✨</button>
+        </div>
+
+        <div id="menu" class="hidden">
+            <h3>Pilih Sesuatu 🎀</h3>
+            <button class="btn" style="background:#4cc9f0;" onclick="nextStep('menu', 'booth')">Buka Photobooth 📸</button>
+            <button class="btn" style="background:#ff85a1;" onclick="nextStep('menu', 'game-menu')">Main Game Seru 🎮</button>
+            <a href="https://spotify.com" target="_blank" class="btn btn-alt" style="background:#1DB954;">Dengar Playlist Kita 🎧</a>
+            <button class="btn" style="background:#ccc;" onclick="nextStep('menu', 'step1')">Ulang Dari Awal 🔄</button>
+        </div>
+
+        <div id="booth" class="hidden">
+            <h3 style="margin-bottom:5px;">Aesthetic Strip 🎞️</h3>
+            
+            <span class="filter-label">Stickers:</span>
+            <div class="grid-ui" id="sticker-selector">
+                <div class="dot-btn sticker-item active" onclick="setSticker('', this)">❌</div>
+                <div class="dot-btn sticker-item" onclick="setSticker('🌸', this)">🌸</div>
+                <div class="dot-btn sticker-item" onclick="setSticker('🎀', this)">🎀</div>
+                <div class="dot-btn sticker-item" onclick="setSticker('🐰', this)">🐰</div>
+                <div class="dot-btn sticker-item" onclick="setSticker('❤️', this)">❤️</div>
+            </div>
+
+            <span class="filter-label">Layout (Shots):</span>
+            <div class="grid-ui">
+                <div id="btn-mode-3" class="dot-btn" style="font-weight:bold; color:var(--text-pink);" onclick="setShotMode(3)">3</div>
+                <div id="btn-mode-4" class="dot-btn active" style="font-weight:bold; color:var(--text-pink);" onclick="setShotMode(4)">4</div>
+            </div>
+
+            <span class="filter-label">Filter:</span>
+            <div class="grid-ui" id="filter-selector">
+                <div class="dot-btn active" style="background:#444;" onclick="setFilter('none', this)"></div>
+                <div class="dot-btn" style="background:#eee;" onclick="setFilter('brightness(1.1) contrast(1.1) sepia(0.2)', this)"></div>
+                <div class="dot-btn" style="background:#ffd1dc;" onclick="setFilter('hue-rotate(-10deg) saturate(1.3)', this)"></div>
+                <div class="dot-btn" style="background:#a2d2ff;" onclick="setFilter('grayscale(100%) brightness(0.9)', this)"></div>
+            </div>
+
+            <span class="filter-label">Frame Color:</span>
+            <div class="grid-ui" id="f-selector">
+                <div class="dot-btn active" style="background:#fff" onclick="selectF('#fff', this)"></div>
+                <div class="dot-btn" style="background:#000" onclick="selectF('#000', this)"></div>
+                <div class="dot-btn" style="background:#ffccd5" onclick="selectF('#ffccd5', this)"></div>
+                <div class="dot-btn" style="background:#cdb4db" onclick="selectF('#cdb4db', this)"></div>
+            </div>
+
+            <div class="camera-box" id="c-box">
+                <div id="countdown">3</div>
+                <div id="sticker-overlay"></div>
+                <video id="webcam" autoplay playsinline></video>
+            </div>
+            
+            <img id="captured-strip">
+            
+            <button class="btn" id="snapBtn" style="background:#f9c74f; color:#333;" onclick="startCapture()">Mulai Foto ✨</button>
+            <button class="btn" id="dlBtn" style="background:#2ec4b6; display:none;" onclick="download()">Simpan Foto 💾</button>
+            <button class="btn btn-alt" id="retakeBtn" style="background:#f08080;" onclick="resetBooth()">Foto Ulang 🔄</button>
+            <button class="btn" style="background:#888" onclick="nextStep('booth', 'menu')">Kembali ke Menu 🏠</button>
+        </div>
+
+        <div id="game-menu" class="hidden">
+            <h3>Pilih Tantangan 🕹️</h3>
+            <button class="btn btn-alt" onclick="startGame(1)">Tangkap Hati ❤️</button>
+            <button class="btn btn-alt" onclick="startGame(2)">Awas Hantu! 👻</button>
+            <button class="btn btn-alt" style="background:#fb8500;" onclick="startGame(3)">Block Blast 🧩</button>
+            <button class="btn" onclick="nextStep('game-menu', 'menu')">Kembali</button>
+        </div>
+        <div id="game-play" class="hidden">
+            <h3 id="score">Score: 0</h3>
+            <div id="game-canvas"></div>
+            <button class="btn btn-alt" onclick="nextStep('game-play', 'game-menu')">Ganti Game</button>
+        </div>
+    </div>
+
+    <canvas id="photo-canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('photo-canvas');
+        const webcam = document.getElementById('webcam');
+        const resultImg = document.getElementById('captured-strip');
+        const cBox = document.getElementById('c-box');
+        const audio = document.getElementById('hbdMusic');
+        const blowSound = document.getElementById('blowSound');
+        const stickerOverlay = document.getElementById('sticker-overlay');
+
+        let photos = [], selColor = "#fff", gameInt;
+        let activeFilter = 'none';
+        let activeSticker = '';
+        let shotMode = 4;
+
+        function playShutterSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const bufferSize = ctx.sampleRate * 0.1;
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'highpass';
+                filter.frequency.value = 1000;
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                noise.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+                noise.start();
+            } catch(e) {}
+        }
+
+        function nextStep(current, next) {
+            document.getElementById(current).classList.add('hidden');
+            document.getElementById(next).classList.remove('hidden');
+            if(next === 'booth') initCam();
+            if(next === 'step4') audio.pause(); 
+            if(current === 'step4') document.getElementById('myVideo').pause(); 
+            if(current === 'game-play') { clearInterval(gameInt); audio.pause(); }
+            if(next === 'step1') {
+                document.getElementById('f1').style.display = 'none';
+                document.getElementById('f2').style.display = 'none';
+                document.getElementById('actionBtn').classList.remove('hidden');
+                document.getElementById('micBtn').style.display = 'none';
+                document.getElementById('micStatus').classList.add('hidden');
+                audio.pause(); audio.currentTime = 0;
+            }
+        }
+
+        function setShotMode(n) {
+            shotMode = n;
+            document.getElementById('btn-mode-3').classList.toggle('active', n === 3);
+            document.getElementById('btn-mode-4').classList.toggle('active', n === 4);
+        }
+
+        function setFilter(filterStr, el) {
+            activeFilter = filterStr;
+            webcam.style.filter = filterStr;
+            document.querySelectorAll('#filter-selector .dot-btn').forEach(d=>d.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function setSticker(emoji, el) {
+            activeSticker = emoji;
+            stickerOverlay.innerText = emoji;
+            document.querySelectorAll('#sticker-selector .dot-btn').forEach(d=>d.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function burn() {
+            document.getElementById('f1').style.display = 'block';
+            document.getElementById('f2').style.display = 'block';
+            document.getElementById('actionBtn').classList.add('hidden');
+            document.getElementById('micBtn').style.display = 'block';
+            document.getElementById('micStatus').classList.remove('hidden');
+            document.getElementById('instructionText').innerText = "Sekarang tiup lilinnya! 🌬️";
+        }
+
+        async function activateMic() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const analyser = ctx.createAnalyser();
+                const mic = ctx.createMediaStreamSource(stream);
+                const script = ctx.createScriptProcessor(2048, 1, 1);
+                analyser.fftSize = 1024;
+                mic.connect(analyser); analyser.connect(script); script.connect(ctx.destination);
+                script.onaudioprocess = () => {
+                    const arr = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(arr);
+                    if(arr.reduce((a,b)=>a+b)/arr.length > 45) { 
+                        blow(); stream.getTracks().forEach(t=>t.stop()); ctx.close(); 
+                    }
+                };
+            } catch(e) { blow(); }
+        }
+
+        // FUNGSI BLOW YANG SUDAH DIMODIFIKASI DENGAN AUDIO 4 DETIK
+        function blow() {
+            // Mainkan suara tiup lilin
+            if(blowSound) {
+                blowSound.currentTime = 0;
+                blowSound.play();
+                // Matikan suara setelah 4 detik
+                setTimeout(() => {
+                    blowSound.pause();
+                }, 4000);
+            }
+
+            document.getElementById('f1').style.display = 'none';
+            document.getElementById('f2').style.display = 'none';
+            confetti({particleCount: 150, spread: 70, origin: { y: 0.6 }});
+            
+            // Pindah ke step 2 setelah 1.5 detik (memberi waktu suara bermain sebentar)
+            setTimeout(() => nextStep('step1', 'step2'), 1500);
+        }
+
+        async function initCam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                webcam.srcObject = stream;
+            } catch(e) { alert("Akses kamera ditolak!"); }
+        }
+
+        function selectF(c, el) {
+            selColor = c;
+            document.querySelectorAll('#f-selector .dot-btn').forEach(d=>d.classList.remove('active'));
+            el.classList.add('active');
+            cBox.style.borderColor = c;
+        }
+
+        async function startCapture() {
+            document.getElementById('snapBtn').classList.add('hidden');
+            photos = [];
+            for(let i=0; i < shotMode; i++) {
+                await timer(3);
+                playShutterSound();
+                
+                const c = document.createElement('canvas');
+                c.width=380; c.height=285;
+                const ctx = c.getContext('2d');
+                
+                ctx.filter = activeFilter; 
+                ctx.translate(380,0); ctx.scale(-1,1);
+                ctx.drawImage(webcam, 0,0, 380, 285);
+                
+                if(activeSticker) {
+                    ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    ctx.font = "50px Poppins";
+                    ctx.textAlign = "right";
+                    ctx.fillText(activeSticker, 360, 60);
+                }
+                
+                photos.push(c.toDataURL());
+                cBox.style.background = "#fff";
+                setTimeout(()=> cBox.style.background="#000", 100);
+            }
+            render();
+        }
+
+        function timer(s) {
+            return new Promise(res => {
+                let c = s;
+                const el = document.getElementById('countdown');
+                el.innerText = c; el.style.display = 'block';
+                const t = setInterval(() => {
+                    c--;
+                    if(c <= 0) { clearInterval(t); el.style.display='none'; res(); }
+                    else el.innerText = c;
+                }, 1000);
+            });
+        }
+
+        function render() {
+            const ctx = canvas.getContext('2d');
+            canvas.width = 400;
+            canvas.height = (shotMode * 305) + 120; 
+
+            ctx.fillStyle = selColor;
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+            
+            let y = 20;
+            let loaded = 0;
+            photos.forEach((p, i) => {
+                const img = new Image();
+                img.src = p;
+                img.onload = () => {
+                    ctx.drawImage(img, 10, y, 380, 285);
+                    y += 305;
+                    loaded++;
+                    if(loaded === shotMode) {
+                        ctx.fillStyle = (selColor==="#000") ? "#fff" : "#c9184a";
+                        ctx.font = "bold 20px Poppins"; ctx.textAlign="center";
+                        ctx.fillText("HAPPY BIRTHDAY 19th ❤️", 200, canvas.height - 60);
+                        ctx.font = "12px Poppins";
+                        ctx.fillText("Special day for Safira Febriani", 200, canvas.height - 35);
+                        
+                        resultImg.src = canvas.toDataURL();
+                        resultImg.style.display = 'block';
+                        cBox.classList.add('hidden');
+                        document.getElementById('dlBtn').style.display = 'block';
+                        confetti();
+                    }
+                }
+            });
+        }
+
+        function resetBooth() {
+            resultImg.style.display = 'none';
+            cBox.classList.remove('hidden');
+            document.getElementById('snapBtn').classList.remove('hidden');
+            document.getElementById('dlBtn').style.display = 'none';
+        }
+
+        function download() {
+            const a = document.createElement('a');
+            a.download = 'hbd-photostrip.png'; a.href = resultImg.src; a.click();
+        }
+
+        function startGame(id) {
+            audio.play().catch(e => {});
+            nextStep('game-menu', 'game-play');
+            let s = 0;
+            const cvs = document.getElementById('game-canvas');
+            cvs.innerHTML = '';
+            document.getElementById('score').innerText = "Score: 0";
+            clearInterval(gameInt);
+
+            if (id === 3) {
+                cvs.innerHTML = '<div id="block-grid"></div>';
+                const grid = document.getElementById('block-grid');
+                const cells = [];
+                for(let i=0; i<36; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'block-cell';
+                    cell.onclick = () => {
+                        if(!cell.classList.contains('active')) {
+                            cell.classList.add('active');
+                            s += 10;
+                            document.getElementById('score').innerText = "Score: " + s;
+                            checkBlast();
+                        }
+                    };
+                    grid.appendChild(cell);
+                    cells.push(cell);
+                }
+                function checkBlast() {
+                    for(let i=0; i<6; i++) {
+                        let row = cells.slice(i*6, (i+1)*6);
+                        if(row.every(c => c.classList.contains('active'))) {
+                            row.forEach(c => c.classList.remove('active'));
+                            s += 100; confetti({particleCount: 20});
+                        }
+                    }
+                }
+            } else {
+                gameInt = setInterval(() => {
+                    const item = document.createElement('div');
+                    item.className = 'game-item';
+                    item.innerHTML = (id===1) ? '❤️' : (Math.random()>0.8?'👻':'❤️');
+                    item.style.left = Math.random()*(cvs.clientWidth-40)+'px';
+                    item.style.top = Math.random()*(cvs.clientHeight-40)+'px';
+                    item.onclick = () => {
+                        s += (item.innerHTML==='👻'?-5:1);
+                        document.getElementById('score').innerText = "Score: " + s;
+                        item.remove();
+                    };
+                    cvs.appendChild(item);
+                    setTimeout(()=>item.remove(), 1000);
+                }, 750);
+            }
+        }
+
+        function emergencyBlow() { blow(); }
+    </script>
+</body>
+</html>
